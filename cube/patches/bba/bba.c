@@ -253,7 +253,7 @@ void bba_transmit(void *data, int size)
 	bba_out8(BBA_NCRA, (bba_in8(BBA_NCRA) & ~BBA_NCRA_ST0) | BBA_NCRA_ST1);
 }
 
-void fsp_output(const char *file, uint8_t filelen, uint32_t offset, uint16_t size);
+void fsp_output(const char *file, uint8_t filelen, uint32_t offset, uint32_t size);
 void eth_input(void *eth, uint16_t size);
 
 static void bba_receive(void)

@@ -134,7 +134,7 @@ static uint8_t fsp_checksum(fsp_header_t *header, uint16_t size)
 
 void bba_transmit(void *buffer, int size);
 
-void fsp_output(const char *file, uint8_t filelen, uint32_t offset, uint16_t size)
+void fsp_output(const char *file, uint8_t filelen, uint32_t offset, uint32_t size)
 {
 	uint8_t data[MIN_FRAME_SIZE + filelen];
 	eth_header_t *eth = (eth_header_t *)data;
@@ -148,7 +148,7 @@ void fsp_output(const char *file, uint8_t filelen, uint32_t offset, uint16_t siz
 	fsp->sequence = 0;
 	fsp->data_length = filelen;
 	fsp->position = offset;
-	*(uint16_t *)(memcpy(fsp->data, file, filelen) + fsp->data_length) = size;
+	*(uint16_t *)(memcpy(fsp->data, file, filelen) + fsp->data_length) = MIN(size, UINT16_MAX);
 	fsp->checksum = fsp_checksum(fsp, sizeof(*fsp) + fsp->data_length + sizeof(uint16_t));
 
 	udp->src_port = 21;
